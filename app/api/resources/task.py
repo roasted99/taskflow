@@ -1,27 +1,15 @@
-          
-#           @staticmethod
-# def get_user_by_id(user_id):
-#     """
-#     Convert string UUID to UUID object if necessary
-#     """
-#     if isinstance(user_id, str):
-#         try:
-#             user_id = uuid.UUID(user_id)
-#         except ValueError:
-#             return None
-#     return User.query.get(user_id)
 from flask import request, jsonify
 import uuid
 from flask_restful import Resource
 from app.services.task_service import TaskService
 from app.schemas.task import task_schema, tasks_schema
-# from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.user_service import UserService
+from app.api.auth_controller import token_required
 # from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
 
 class TaskResource(Resource):
-    # @jwt_required()
+    @token_required()
     # @doc(description='Get a task or list of tasks', tags=['Tasks'])
     def get(self, task_id=None):
         if task_id:

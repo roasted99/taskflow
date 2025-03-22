@@ -34,7 +34,8 @@ class UserResource(Resource):
         
         # Create user
         user = UserService.create_user(
-            username=json_data.get('username'),
+            first_name=json_data.get('first_name'),
+            last_name=json_data.get('last_name'),
             email=json_data.get('email'),
             password=json_data.get('password')
         )
