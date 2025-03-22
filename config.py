@@ -8,12 +8,11 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    FLASK_ENV = 'development'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEVELOP_DATABASE_URI')
         
 class ProductionConfig(Config):
     DEBUG = True
-    FLASK_ENV = 'production'
+    
         
 config = {
     'development': DevelopmentConfig,
