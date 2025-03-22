@@ -4,12 +4,12 @@ from flask_restful import Resource
 from app.services.task_service import TaskService
 from app.schemas.task import task_schema, tasks_schema
 from app.services.user_service import UserService
-from app.api.auth_controller import token_required
+from flask_jwt_extended import jwt_required, current_user, get_jwt_identity
 # from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
 
 class TaskResource(Resource):
-    @token_required()
+    @jwt_required()
     # @doc(description='Get a task or list of tasks', tags=['Tasks'])
     def get(self, task_id=None):
         if task_id:
@@ -27,8 +27,8 @@ class TaskResource(Resource):
         # Get query parameters for filtering
         status = request.args.get('status')
         priority = request.args.get('priority')
-        assigned_to_id = request.args.get('assigned_to_id', type=int)
-        created_by_id = request.args.get('created_by_id', type=int)
+        assigned_to_id = request.args.get('assigned_to_id', type=str)
+        created_by_id = request.args.get('created_by_id', type=str)
         
         # Create filters dictionary
         filters = {}
@@ -45,7 +45,7 @@ class TaskResource(Resource):
         tasks = TaskService.get_all_tasks(filters)
         return tasks_schema.dump(tasks)
     
-    # @jwt_required()
+    @jwt_required()
     # @doc(description='Create a new task', tags=['Tasks'])
     def post(self):
         json_data = request.get_json()
@@ -53,10 +53,10 @@ class TaskResource(Resource):
             return {"message": "No input data provided"}, 400
         
         # Get the current user from the JWT
-        # current_user_id = get_jwt_identity()
+        current_user_id = get_jwt_identity()
         
         # Set the created_by field to the current user
-        # json_data['created_by_id'] = current_user_id
+        json_data['created_by_id'] = current_user_id
         
         # Validate data
         try:
@@ -73,12 +73,12 @@ class TaskResource(Resource):
             start_date=json_data.get('start_date'),
             end_date=json_data.get('end_date'),
             assigned_to_id=json_data.get('assigned_to_id'),
-            # created_by_id=current_user_id
+            created_by_id=current_user_id
         )
         
         return task_schema.dump(task), 201
     
-    # @jwt_required()
+    @jwt_required()
     # @doc(description='Update an existing task', tags=['Tasks'])
     def put(self, task_id):
         json_data = request.get_json()
@@ -86,36 +86,36 @@ class TaskResource(Resource):
             return {"message": "No input data provided"}, 400
         
         # Get the current user from the JWT
-        # current_user_id = get_jwt_identity()
-        
-        # Check if task exists and user has permission
-        # task = TaskService.get_task_by_id(task_id)
-        # if not task:
-        #     return {"message": "Task not found"}, 404
-        
-        # # Only the creator or the assigned user can update the task
-        # if task.created_by_id != current_user_id and task.assigned_to_id != current_user_id:
-        #     return {"message": "You don't have permission to update this task"}, 403
-        
-        # # Update task
-        # task = TaskService.update_task(task_id, json_data)
-        
-        # return task_schema.dump(task)
-    
-    # @jwt_required()
-    # @doc(description='Delete a task', tags=['Tasks'])
-    def delete(self, task_id):
-        # Get the current user from the JWT
-        # current_user_id = get_jwt_identity()
+        current_user_id = get_jwt_identity()
         
         # Check if task exists and user has permission
         task = TaskService.get_task_by_id(task_id)
-        # if not task:
-        #     return {"message": "Task not found"}, 404
+        if not task:
+            return {"message": "Task not found"}, 404
+        
+        # # Only the creator or the assigned user can update the task
+        if task.created_by_id != current_user_id and task.assigned_to_id != current_user_id:
+            return {"message": "You don't have permission to update this task"}, 403
+        
+        # # Update task
+        task = TaskService.update_task(task_id, json_data)
+        
+        return task_schema.dump(task)
+    
+    @jwt_required()
+    # @doc(description='Delete a task', tags=['Tasks'])
+    def delete(self, task_id):
+        # Get the current user from the JWT
+        current_user_id = get_jwt_identity()
+        
+        # Check if task exists and user has permission
+        task = TaskService.get_task_by_id(task_id)
+        if not task:
+            return {"message": "Task not found"}, 404
         
         # # Only the creator can delete the task
-        # if task.created_by_id != current_user_id:
-        #     return {"message": "You don't have permission to delete this task"}, 403
+        if task.created_by_id != current_user_id:
+            return {"message": "You don't have permission to delete this task"}, 403
         
         # Delete task
         result = TaskService.delete_task(task_id)

@@ -1,5 +1,6 @@
 import uuid
-import jwt
+# import jwt
+from flask_jwt_extended import create_access_token
 import bcrypt
 # from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta
@@ -49,10 +50,14 @@ class AuthService:
         if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             return {"error": "Invalid credentials"}, 401
         
-        token = AuthService.generate_token(user)
+        # token = AuthService.generate_token(user)
+        access_token = create_access_token(
+            identity=str(user.id),
+            expires_delta=timedelta(days=1)
+        )
         
         return {
-            "token": token,
+            "token": access_token,
             "user": {
                 "id": str(user.id),
                 "email": user.email,
@@ -60,35 +65,3 @@ class AuthService:
                 "last_name": user.last_name
             }
         }, 200
-    
-    @staticmethod
-    def generate_token(user):
-        """Generate JWT token for user."""
-        payload = {
-            'sub': str(user.id),
-            'iat': datetime.utcnow(),
-            'exp': datetime.utcnow() + timedelta(days=1)  # Token expires in 1 day
-        }
-        
-        return jwt.encode(
-            payload,
-            current_app.config['SECRET_KEY'],
-            algorithm='HS256'
-        )
-    
-    @staticmethod
-    def verify_token(token):
-        """Verify JWT token and return user."""
-        try:
-            payload = jwt.decode(
-                token,
-                current_app.config['SECRET_KEY'],
-                algorithms=['HS256']
-            )
-            
-            user_id = payload['sub']
-            return User.query.get(user_id)
-        except jwt.ExpiredSignatureError:
-            return None  
-        except jwt.InvalidTokenError:
-            return None  
