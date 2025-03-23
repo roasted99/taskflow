@@ -19,9 +19,7 @@ class AuthService:
         if existing_user:
             return {"error": "Email already registered"}, 409
         
-        print(first_name, last_name, email)
         password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        print(password_hash)
         
         new_user = User(
             id=str(uuid.uuid4()),

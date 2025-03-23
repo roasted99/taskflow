@@ -1,0 +1,21 @@
+tags:
+  - Tasks
+summary: Delete a task
+description: Delete an existing task by ID
+security:
+  - Bearer: []
+parameters:
+  - name: task_id
+    in: path
+    required: true
+    type: string
+    description: ID of the task to delete
+responses:
+  204:
+    description: Task deleted successfully
+  401:
+    description: Unauthorized - Missing or invalid token
+  403:
+    description: Forbidden - User doesn't have access to this task
+  404:
+    description: Task not found

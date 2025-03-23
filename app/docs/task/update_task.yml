@@ -1,0 +1,102 @@
+tags:
+  - Tasks
+summary: Update a task
+description: Update an existing task by ID
+security:
+  - Bearer: []
+parameters:
+  - name: task_id
+    in: path
+    required: true
+    type: string
+    description: ID of the task to update
+  - name: body
+    in: body
+    required: true
+    schema:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Updated task title
+        description:
+          type: string
+          example: Updated task description
+        start_date:
+          type: string
+          format: date-time
+          example: 2025-04-15T12:00:00Z
+        end_date:
+          type: string
+          format: date-time
+          example: 2025-04-15T12:00:00Z
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH]
+          example: HIGH
+        status:
+          type: string
+          enum: [TODO, IN_PROGRESS, COMPLETED]
+          example: IN_PROGRESS
+        assigned_to_id:
+          type: string
+          example: 12345678-1234-5678-1234-567812345678
+          description: ID of the user to assign the task to
+responses:
+  200:
+    description: Task updated successfully
+    schema:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        priority:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        owned_by:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        assigned_to:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+  400:
+    description: Invalid input data
+  401:
+    description: Unauthorized - Missing or invalid token
+  403:
+    description: Forbidden - User doesn't have access to this task
+  404:
+    description: Task not found

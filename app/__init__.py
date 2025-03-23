@@ -1,9 +1,7 @@
 from flask import Flask
-from app.extensions import db, ma, migrate, jwt
+from app.extensions import db, ma, migrate, jwt, swagger
 from app.api.routes import register_routes
 from flask_jwt_extended import JWTManager
-from apispec import APISpec
-from apispec.ext.marshmallow import MarshmallowPlugin
 
 def create_app(config_name="default"):
     from config import config
@@ -16,6 +14,63 @@ def create_app(config_name="default"):
     ma.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
+    
+    # def init_swagger(app):
+    #     app.config['SWAGGER'] = {
+    #         'title': 'Taskflow API',
+    #         'uiversion': 3,
+    #         'version': '1.0',
+    #         'description': 'Taskflow API documentation',
+    #         'specs': [
+    #             {
+    #                 'endpoint': 'apispec',
+    #                 'route': '/apispec.json',
+    #                 'rule_filter': lambda rule: True,  # lambdas must stay in Python
+    #                 'model_filter': lambda tag: True,  # lambdas must stay in Python
+    #             }
+    #         ],
+    #         'securityDefinitions': {
+    #             'Bearer': {
+    #                 'type': 'apiKey',
+    #                 'name': 'Authorization',
+    #                 'in': 'header',
+    #                 'description': 'Enter your bearer token in the format: Bearer <token>'
+    #             }
+    #         },
+    #         'security': [
+    #             {
+    #                 'Bearer': []
+    #             }
+    #         ]
+    # }
+    app.config['SWAGGER']={
+        'title': 'Taskflow API',
+        'uiversion': 3,
+        'version': '1.0',
+        'description': 'Taskflow API documentation',
+        'specs': [
+            {
+                'endpoint': 'apispec',
+                'route': '/apispec.json',
+                'rule_filter': lambda rule: True,  # lambdas must stay in Python
+                'model_filter': lambda tag: True,  # lambdas must stay in Python
+            }
+        ],
+        'securityDefinitions': {
+            'Bearer': {
+                'type': 'apiKey',
+                    'name': 'Authorization',
+                    'in': 'header',
+                    'description': 'Enter your bearer token in the format: Bearer <token>'
+                }
+            },
+            'security': [
+                {
+                    'Bearer': []
+                }
+            ]
+    }
+    swagger.init_app(app) 
     
     register_routes(app)
     

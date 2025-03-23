@@ -1,0 +1,78 @@
+tags:
+  - Tasks
+summary: Create a new task
+description: Create a new task for the authenticated user
+security:
+  - Bearer: []
+parameters:
+  - name: body
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          example: Complete project documentation
+        description:
+          type: string
+          example: Write all required documentation for the project handover
+        start_date:
+          type: string
+          example: '2025-04-01'
+        end_date:
+          type: string
+          example: '2025-04-03'
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH]
+          example: MEDIUM
+        status:
+          type: string
+          enum: [TODO, IN_PROGRESS, COMPLETED]
+          example: TODO
+responses:
+  201:
+    description: Task created successfully
+    schema:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        priority:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        owned_by:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+  400:
+    description: Invalid input data
+  401:
+    description: Unauthorized - Missing or invalid token

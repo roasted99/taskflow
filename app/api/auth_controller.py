@@ -1,11 +1,12 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
 from app.services.auth_service import AuthService
-from functools import wraps
+from flasgger import swag_from
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
 @auth_bp.route('/register', methods=['POST'])
+@swag_from('../docs/auth/register.yml')
 def register():
     data = request.get_json()
     
@@ -25,6 +26,7 @@ def register():
     return jsonify(result), status_code
 
 @auth_bp.route('/login', methods=['POST'])
+@swag_from('../docs/auth/login.yml')
 def login():
     data = request.get_json()
     

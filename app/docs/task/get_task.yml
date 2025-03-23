@@ -1,0 +1,65 @@
+tags:
+  - Tasks
+summary: Get a single task
+description: Retrieve detailed information for a specific task by ID
+security:
+  - Bearer: []
+parameters:
+  - name: task_id
+    in: path
+    required: true
+    type: string
+    description: ID of the task to retrieve
+responses:
+  200:
+    description: Task details
+    schema:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        due_date:
+          type: string
+          format: date-time
+        priority:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        owned_by:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        assigned_to:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+  401:
+    description: Unauthorized - Missing or invalid token
+  403:
+    description: Forbidden - User doesn't have access to this task
+  404:
+    description: Task not found

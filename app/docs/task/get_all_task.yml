@@ -1,0 +1,79 @@
+tags:
+  - Tasks
+summary: Get all tasks
+description: Retrieve all tasks for the authenticated user
+security:
+  - Bearer: []
+parameters:
+  - name: status
+    in: query
+    required: false
+    type: string
+    enum: [TODO, IN_PROGRESS, COMPLETED]
+    description: Filter tasks by status
+  - name: priority
+    in: query
+    required: false
+    type: string
+    enum: [LOW, MEDIUM, HIGH]
+    description: Filter tasks by priority
+  - name: date_range
+    in: query
+    required: true
+    type: string
+    description: Filter by date range
+    default: "2025-04-01,2025-04-04"
+responses:
+  200:
+    description: List of tasks
+    schema:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              due_date:
+                type: string
+                format: date-time
+              priority:
+                type: string
+              status:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+              owned_by:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  email:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+              assigned_to:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  email:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+  401:
+    description: Unauthorized - Missing or invalid token
