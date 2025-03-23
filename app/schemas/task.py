@@ -19,13 +19,13 @@ class TaskSchema(ma.SQLAlchemyAutoSchema):
     start_date = fields.Date(required=False)
     end_date = fields.Date(required=False)    
     assigned_to_id = fields.UUID(required=False, allow_none=True)  
-    created_by_id = fields.UUID(required=True) 
+    owned_by_id = fields.UUID(required=True) 
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True) 
     
     # Include user details in the response
     assigned_to = fields.Nested(UserSchema(only=('id', 'first_name', 'last_name')), dump_only=True)
-    created_by = fields.Nested(UserSchema(only=('id', 'first_name', 'last_name')), dump_only=True)
+    owned_by = fields.Nested(UserSchema(only=('id', 'first_name', 'last_name')), dump_only=True)
     
     @validates_schema
     def validate_dates(self, data, **kwargs):

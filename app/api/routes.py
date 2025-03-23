@@ -11,9 +11,9 @@ def register_routes(app):
 
     app.register_blueprint(auth_bp)
     
-    # api.add_resource(UserResource, '/users', '/users/<string:user_id>')
+    api.add_resource(UserResource, '/users', '/users/<string:user_id>')
     
-    # api.add_resource(TaskResource, '/tasks', '/tasks/<string:task_id>')
+    api.add_resource(TaskResource, '/tasks', '/tasks/<string:task_id>')
     
     app.register_blueprint(api_bp)
     

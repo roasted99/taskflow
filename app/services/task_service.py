@@ -32,8 +32,8 @@ class TaskService:
                 query = query.filter(Task.assigned_to_id == filters['assigned_to_id'])
             
             # Apply created_by filter
-            if 'created_by_id' in filters and filters['created_by_id']:
-                query = query.filter(Task.created_by_id == filters['created_by_id'])
+            if 'owned_by_id' in filters and filters['owned_by_id']:
+                query = query.filter(Task.owned_by_id == filters['ownedby_id'])
                 
             # Apply date range filter
             if 'date_range' in filters and filters['date_range']:
@@ -56,16 +56,16 @@ class TaskService:
         return Task.query.get(task_id)
     
     @staticmethod
-    def create_task(title, body, status, priority, start_date, end_date, assigned_to_id, created_by_id):
+    def create_task(title, description, status, priority, start_date, end_date, assigned_to_id, owned_by_id):
         task = Task(
             title=title,
-            body=body,
+            description=description,
             status=status,
             priority=priority,
             start_date=start_date,
             end_date=end_date,
             assigned_to_id=assigned_to_id,
-            created_by_id=created_by_id
+            owned_by_id=owned_by_id
         )
         db.session.add(task)
         db.session.commit()

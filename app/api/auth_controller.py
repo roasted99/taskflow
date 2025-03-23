@@ -41,9 +41,10 @@ def login():
     return jsonify(result), status_code
 
 @auth_bp.route('/me', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_current_user():
     """Example of a protected route that returns current user info"""
+    
     return jsonify({
         "id": current_user.id,
         "email": current_user.email,
