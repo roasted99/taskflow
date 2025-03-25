@@ -49,7 +49,10 @@ class TaskService:
                     )
         
         # Order by priority (highest first) and creation date (newest first)
-        return query.order_by(Task.priority.desc(), Task.created_at.desc()).all()
+        tasks = query.order_by(Task.priority.desc(), Task.created_at.desc()).all()
+        task_list = [task.to_dict() for task in tasks]
+
+        return task_list
     
     @staticmethod
     def get_task_by_id(task_id):
@@ -69,7 +72,7 @@ class TaskService:
         )
         db.session.add(task)
         db.session.commit()
-        return task
+        return task.to_dict()
     
     @staticmethod
     def update_task(task_id, data):
@@ -94,7 +97,7 @@ class TaskService:
             task.assigned_to_id = data['assigned_to_id']
         
         db.session.commit()
-        return task
+        return task.to_dict()
     
     @staticmethod
     def delete_task(task_id):

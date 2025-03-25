@@ -1,7 +1,8 @@
 from flask import Flask
 from app.extensions import db, ma, migrate, jwt, swagger
 from app.api.routes import register_routes
-from flask_jwt_extended import JWTManager
+from flask_cors import CORS
+
 
 def create_app(config_name="default"):
     from config import config
@@ -71,6 +72,7 @@ def create_app(config_name="default"):
             ]
     }
     swagger.init_app(app) 
+    CORS(app)
     
     register_routes(app)
     

@@ -40,4 +40,18 @@ class Task(db.Model):
     def __repr__(self):
         return f'<Task {self.title}>'
     
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'status': self.status.value,
+            'priority': self.priority.value,
+            'start_date': self.start_date,
+            'end_date': self.end_date,
+            'owned_by': self.owned_by,
+            'assigned_to': self.assigned_to,
+            'owned_by_id': self.owned_by_id,
+            'assgined_by_id': self.assigned_to_id
+        }    
     

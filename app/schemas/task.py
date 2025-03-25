@@ -33,6 +33,8 @@ class TaskSchema(ma.SQLAlchemyAutoSchema):
             if data['start_date'] > data['end_date']:
                 raise ValidationError("End date must be after start date")
 
+
+
 task_schema = TaskSchema()
 tasks_schema = TaskSchema(many=True)
     
