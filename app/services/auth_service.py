@@ -1,14 +1,10 @@
 import uuid
-# import jwt
 from flask_jwt_extended import create_access_token
 import bcrypt
-# from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta
 from flask import current_app
 from app.models.user import User
 from app import db
-
-# bcrypt = Bcrypt(app)
 
 class AuthService:
     @staticmethod
@@ -48,10 +44,9 @@ class AuthService:
         if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             return {"error": "Invalid credentials"}, 401
         
-        # token = AuthService.generate_token(user)
         access_token = create_access_token(
             identity=str(user.id),
-            expires_delta=timedelta(days=1)
+            expires_delta=timedelta(days=5)
         )
         
         return {

@@ -37,7 +37,10 @@ class TaskService:
                 
             # Apply date range filter
             if 'date_range' in filters and filters['date_range']:
-                start, end = filters['date_range']
+                date_range_search = filters['date_range'].split(',')
+                start = date_range_search[0]
+                end = date_range_search[1]
+
                 if start and end:
                     # Tasks that overlap with the date range
                     query = query.filter(

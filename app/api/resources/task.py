@@ -17,7 +17,7 @@ class TaskResource(Resource):
         priority = request.args.get('priority')
         assigned_to_id = request.args.get('assigned_to_id', type=str)
         owned_by_id = request.args.get('owned_by_id', type=str)
-        date_range = request.args.get('date_range', type=object)
+        date_range = request.args.get('date_range', type=str)
         
         # Create filters dictionary
         filters = {}
@@ -31,6 +31,8 @@ class TaskResource(Resource):
             filters['owned_by_id'] = owned_by_id
         if date_range:
             filters['date_range'] = date_range
+        
+        print(filters)
             
         # Get tasks with filters
         tasks = TaskService.get_all_tasks(filters)
@@ -50,11 +52,16 @@ class TaskResource(Resource):
         # Set the created_by field to the current user
         json_data['owned_by_id'] = current_user_id
         
+        json_data['start_date'] = json_data.get('start_date') if json_data.get('start_date').strip() else None
+        json_data['end_date'] = json_data.get('end_date') if json_data.get('end_date').strip() else None
+        json_data['assigned_to_id'] = json_data.get('assgined_to_id') if json_data.get('assgined_to_id') and json_data.get('assigned_to_id').strip() else None
+        
         # Validate data
         try:
             data = task_schema.load(json_data)
         except Exception as e:
             return {"message": str(e)}, 422
+        
         
         # Create task
         task = TaskService.create_task(
@@ -104,8 +111,8 @@ class TaskItemResource(Resource):
         if not task:
             return {"message": "Task not found"}, 404
         
-        # # Only the creator or the assigned user can update the task
-        if task.owned_by_id == current_user_id or task.assigned_to_id == current_user_id:
+        # # # Only the creator or the assigned user can update the task
+        if str(task.owned_by_id) != current_user_id and str(task.assigned_to_id) != current_user_id:
             return {"message": "You don't have permission to update this task"}, 403
         
         # # Update task
@@ -125,7 +132,7 @@ class TaskItemResource(Resource):
             return {"message": "Task not found"}, 404
         
         # # Only the creator can delete the task
-        if task.owned_by_id != current_user_id:
+        if str(task.owned_by_id) != current_user_id:
             return {"message": "You don't have permission to delete this task"}, 403
         
         # Delete task
