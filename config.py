@@ -1,5 +1,4 @@
 import os
-from datetime import timedelta
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,7 +14,6 @@ class DevelopmentConfig(Config):
 class ProductionConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')
-    
         
 config = {
     'development': DevelopmentConfig,
