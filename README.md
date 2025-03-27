@@ -121,7 +121,11 @@ headers = {
 ```
 
 ## API Documentation
-API documentation is generated using Flasgger and can be accessed at:
+API documentation is generated using Flasgger and for production server, documentation can be access at 
+-Swagger UI: `https://taskflow-pp21.onrender.com/apidocs/`
+- Swagger JSON: `https://taskflow-pp21.onrender.com/apispec_1.json`
+
+For developement documentation can be accessed at:
 - Swagger UI: `http://localhost:5000/apidocs/`
 - Swagger JSON: `http://localhost:5000/apispec_1.json`
 

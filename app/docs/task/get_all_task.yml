@@ -19,7 +19,7 @@ parameters:
     description: Filter tasks by priority
   - name: date_range
     in: query
-    required: true
+    required: false
     type: string
     description: Filter by date range
     default: "2025-04-01,2025-04-04"
