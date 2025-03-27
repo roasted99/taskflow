@@ -56,6 +56,24 @@ flask db migrate -m "Initial migration"
 # Apply migrations
 flask db upgrade
 ```
+## Database Seeding
+
+To set up the initial database with sample users, run:
+
+```bash
+flask seed-db
+```
+
+This command creates the database tables and populates them with test data. You can log in with the following credentials:
+
+**User 1:**
+- Email: `jan@corporate.com`
+- Password: `securepass123`
+
+**User 2:**
+- Email: `roy@example.com`
+- Password: `password456`
+
 
 ## Authentication and Security
 
