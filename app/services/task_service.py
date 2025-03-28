@@ -86,8 +86,8 @@ class TaskService:
         # Update fields if provided
         if 'title' in data:
             task.title = data['title']
-        if 'body' in data:
-            task.body = data['body']
+        if 'description' in data:
+            task.body = data['description']
         if 'status' in data:
             task.status = data['status']
         if 'priority' in data:
