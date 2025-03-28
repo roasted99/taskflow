@@ -148,5 +148,9 @@ For developement documentation can be accessed at:
 - Check that the token is correctly formatted in the header
 - Verify user credentials during login
 
+## ER Diagram 
+![taskflowER Diagram](https://github.com/user-attachments/assets/c956d99c-2211-4864-a5ff-88d6146fcb11)
+
+
 
 
