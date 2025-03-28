@@ -71,7 +71,7 @@ This command creates the database tables and populates them with test data. You 
 - Password: `securepass123`
 
 **User 2:**
-- Email: `roy@example.com`
+- Email: `roy@corporate.com`
 - Password: `password456`
 
 
