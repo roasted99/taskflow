@@ -1,4 +1,4 @@
-# Backend Service Documentation
+# Taskflow Backend 
 
 ## Project Overview
 This is a backend service built using Python Flask with PostgreSQL as the database. The project provides a RESTful API with Swagger documentation and implements secure authentication using JWT (JSON Web Tokens) and bcrypt password hashing.
