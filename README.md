@@ -67,12 +67,8 @@ flask seed-db
 This command creates the database tables and populates them with test data. You can log in with the following credentials:
 
 **User 1:**
-- Email: `jan@corporate.com`
-- Password: `securepass123`
-
-**User 2:**
-- Email: `roy@corporate.com`
-- Password: `password456`
+- Email: `jane@corporate.com`
+- Password: `jane2025`
 
 
 ## Authentication and Security
